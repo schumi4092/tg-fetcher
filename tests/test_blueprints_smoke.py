@@ -14,6 +14,7 @@ assert on the SHAPE of the response (status + JSON keys), not the content.
 import json
 import os
 import sys
+import asyncio
 from pathlib import Path
 
 import pytest
@@ -68,6 +69,36 @@ def test_status_endpoint(client):
     assert "has_ai" in data
     assert "has_embeddings" in data
     assert "auto_summary_runs" in data
+
+
+def test_status_endpoint_masks_phone(client, monkeypatch):
+    import routes.telegram as telegram_routes
+    import telegram_service as tgs
+
+    class DummyUser:
+        first_name = "Ada"
+        last_name = "Lovelace"
+        username = "ada"
+        phone = "+886912345678"
+        id = 123
+
+    class DummyClient:
+        async def is_user_authorized(self):
+            return True
+
+        async def get_me(self):
+            return DummyUser()
+
+    telegram_routes._status_cache.update({"ts": 0.0, "connected": False, "me": None})
+    monkeypatch.setattr(telegram_routes, "telethon_ready", lambda: True)
+    monkeypatch.setattr(tgs, "tg_client", DummyClient())
+    monkeypatch.setattr(telegram_routes, "run_async", lambda coro, timeout=None: asyncio.run(coro))
+
+    r = client.get("/api/status")
+    assert r.status_code == 200
+    user = r.get_json()["user"]
+    assert "phone" not in user
+    assert user["phone_masked"] == "+88****78"
 
 
 def test_dialogs_requires_login(client):

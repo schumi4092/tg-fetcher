@@ -11,7 +11,7 @@ const SAMPLE_TOPICS = [
 
 function App() {
   const [loggedIn, setLoggedIn] = uS(true);
-  const [user, setUser] = uS({ name: "Wen", username: "wenlin", phone: "+886 912 345 678" });
+  const [user, setUser] = uS({ name: "Demo", username: "demo", phone: "" });
   const [view, setView] = uS("brief"); // inbox | brief | memory | alerts | notes
 
   // Inbox state

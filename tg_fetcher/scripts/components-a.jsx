@@ -71,7 +71,7 @@ function Rail({ view, setView, alertCount, onAvatar }) {
 // ---------- Login ----------
 function LoginView({ onLogin }) {
   const [phase, setPhase] = useState("phone");
-  const [phone, setPhone] = useState("+886 912 345 678");
+  const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [pw, setPw] = useState("");
   const [loading, setLoading] = useState(false);
@@ -80,7 +80,7 @@ function LoginView({ onLogin }) {
     setTimeout(() => {
       if (phase === "phone") { setPhase("code"); setLoading(false); }
       else if (phase === "code") { setPhase("pw"); setLoading(false); }
-      else { onLogin({ name: "Wen", username: "wenlin", phone }); }
+      else { onLogin({ name: "Demo", username: "demo", phone }); }
     }, 700);
   };
   return (

@@ -42,6 +42,13 @@ _status_cache_lock = threading.Lock()
 STATUS_CACHE_TTL = 15.0
 
 
+def _mask_phone(phone):
+    phone = str(phone or "")
+    if not phone:
+        return ""
+    return phone[:3] + "****" + phone[-2:] if len(phone) > 5 else "****"
+
+
 def _parse_positive_float_arg(name, default):
     raw = request.args.get(name)
     if raw in (None, ""):
@@ -99,7 +106,7 @@ def api_status():
                 return True, {
                     "name": f"{user.first_name or ''} {user.last_name or ''}".strip(),
                     "username": user.username or "",
-                    "phone": user.phone or "",
+                    "phone_masked": _mask_phone(user.phone),
                     "id": user.id,
                 }
             try:
