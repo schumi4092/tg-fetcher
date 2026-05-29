@@ -1,0 +1,8 @@
+flask
+flask-cors
+telethon
+anthropic
+httpx
+numpy
+pytest
+voyageai

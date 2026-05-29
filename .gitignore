@@ -1,0 +1,20 @@
+.env
+*.session
+*.session-*
+tg_memory.db
+tg_memory.db-*
+tg_fetcher.server.lock
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Runtime artifacts (contain TG account info, message content)
+logs/
+# Claude Code local tooling config (personal paths / permissions)
+.claude/
+# User-pasted uploads
+tg_fetcher/uploads/
+# Windows shortcuts
+*.lnk
+# Superseded legacy frontend (kept locally, not published)
+static/index.legacy.html
