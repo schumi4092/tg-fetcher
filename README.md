@@ -75,9 +75,12 @@ Claude API 按 token 計費：
 - 事件提取約 500-1000 tokens（約 $0.002-0.003）
 - **一天大量使用估計 < $0.10**
 
-## 注意事項
+## 注意事項與安全
 
-- 此工具僅供個人使用
-- `tg_memory.db` 包含你的摘要和筆記，請妥善保管
-- 僅在本機執行，勿暴露至公網
-- Claude API Key 請勿外洩
+> ⚠️ **只在本機 localhost 執行，絕對不要暴露到公網。**
+> 後端用 SameSite cookie + 自訂 header 擋跨站請求，但**這不是針對「能直接連到 port 的人」的驗證**：任何能存取 `/` 的人都會拿到 API token。一旦綁到 `0.0.0.0`、或經 ngrok／反向代理／port-forward 對外，等於把你的 Telegram 帳號與整個 `tg_memory.db` 交出去。要遠端使用請自行加上真正的登入驗證。
+
+- 此工具僅供個人使用；使用者需自負 Telegram / GMGN / Twitter 等服務條款與當地法規（含他人訊息的隱私）之合規責任。
+- 用個人帳號大量抓取／封存訊息可能違反 Telegram 服務條款，有帳號被限制的風險。
+- `.env`（API keys）、`*.session`（= Telegram 帳號登入態）、`tg_memory.db`（你的摘要／筆記）都已被 `.gitignore` 排除——請勿提交或外流，尤其 `*.session` 等同帳號鑰匙。
+- 授權：見 [LICENSE](LICENSE)（MIT）。
